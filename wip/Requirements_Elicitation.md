@@ -62,6 +62,12 @@ D4: Microsoft Teams and Microsoft Forms are reliable.
 
 - R14: The system allows students and companies to keep track of the ongoing internship, by providing spaces where both parties can write their opinions, problems and other relevant information regarding the internship.
 
+# World phenomena
+
+- WP1: Companies open new positions for internships.
+- WP2: Students want to look for an internship.
+- WP3: Both students and companies regularly check the platform for notifications.
+
 # Shared phenomena
 
 ## World controlled
