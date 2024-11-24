@@ -14,7 +14,7 @@ G5: Companies want to accept internships requests from students.
 
 D1: The system has a reliable internet connection.
 
-D2: Companies add internship offerings containing correct data.
+D2: Companies add internship offers containing correct data.
 
 D3: Students add their CVs containing correct data.
 
@@ -82,11 +82,14 @@ D4: Microsoft Teams and Microsoft Forms are reliable.
 - SP8: Students accept an internship offer.
 - SP9: Companies create questionnaires and interviews to finalise the selection process.
 - SP10: Students and companies can share thoughts, problems and other relevant information about the internship.
+- SP11: Universities monitor the complaints, shared by students and/or companies.
+- SP12: Students interrupt the internship before the end of the contract.
+- SP13: Companies interrupt the internship before the end of the contract.
 
 ## Machine controlled
 
-- SP11: The system notifies the student if a company wants him for an internship.
-- SP12: The system notifies the company if a student applies for an internship.
-- SP13: The system connects to Microsoft APIs to create embedded MS Forms questionnaires and MS Teams calls for interviews.
-- SP14: The system shows the newly created questionnaires and calls space to the company and the student.
+- SP14: The system notifies the student if a company wants him for an internship.
+- SP15: The system notifies the company if a student applies for an internship.
+- SP16: The system connects to Microsoft APIs to create embedded MS Forms questionnaires and MS Teams calls for interviews.
+- SP17: The system shows the newly created questionnaires and calls space to the company and the student.
 
