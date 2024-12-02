@@ -1,0 +1,13 @@
+actor Student
+participant System
+actor Company
+
+activate Student
+Student->System: 1 : GET(MyInternships)
+activate System
+System-->>Student: 2 : show(MyInternships)
+Student->System: 3 : POST(Internship, Company, Accepted)
+System-->>Company: 4 : notifyObserver(Internship, Company)
+System-->>Student: 5 : show(MyInternships)
+deactivateafter Student
+deactivateafter System

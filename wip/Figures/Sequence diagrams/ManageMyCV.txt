@@ -1,0 +1,23 @@
+actor Student
+participant System
+
+activate Student
+Student->System: 1 : GET(MyAccount)
+activate System
+System-->>Student: 2 : show(MyAccount)
+Student->System: 3 : GET(MyCV)
+System-->>Student: 4 : show(MyCV)
+Student->System: 5 : POST(CV)
+System->System: 6 : checkFile(CV)
+alt CV.Format != PDF
+  System-->>Student: 7 : response(KO, "Unsupported file format")
+  System-->>Student: 8 : show(MyCV)
+else CV.Size > 5 MB
+  System-->>Student: 7 : response(KO, "File is too large")
+  System-->>Student: 8 : show(MyCV)
+else default
+  System-->>Student: 7 : response(200 OK)
+  System-->>Student: 8 : show(MyCV)
+end
+deactivateafter Student
+deactivateafter System
