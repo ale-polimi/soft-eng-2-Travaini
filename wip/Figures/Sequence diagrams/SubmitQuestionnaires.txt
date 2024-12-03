@@ -1,0 +1,36 @@
+actor Student
+participant System
+actor MS Forms
+actor Company
+
+activate Student
+Student->System: 1 : GET(MyQuestionnaires)
+activate System
+System-->>Student: 2 : show(Form[ ])
+Student->System: 3 : GET(Form)
+alt MS Forms is not avaiable
+  System-->>Student: 4 : response(503 Service unavailable)
+else default
+  System->MS Forms: 4 : APICall(Form)
+  activate MS Forms
+  MS Forms-->>System: 5 : response(Form)
+  deactivateafter MS Forms
+  System-->>Student: 6 : show(Form)
+  Student->System: 7 : submit(Form)
+  alt Empty fields
+    System->MS Forms: 8 : APICall(Form)
+    activate MS Forms
+    MS Forms-->>System: 9 : response(KO, "Empty fields")
+    deactivateafter MS Forms
+    System-->>Student: 10 : show(Form)
+  else default
+    System->MS Forms: 8 : APICall(Form)
+    activate MS Forms
+    MS Forms-->>System: 9 : response(200 OK)
+    deactivateafter MS Forms
+    System-->>Company: 10 : notifyObserver(Student, Form)
+    System-->>Student: 11 : response(200 OK)
+  end
+end
+deactivateafter Student
+deactivateafter System

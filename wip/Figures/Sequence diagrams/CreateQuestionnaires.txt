@@ -1,0 +1,37 @@
+actor Company
+participant System
+actor MS Forms
+actor Student
+
+activate Company
+Company->System: 1 : GET(MyInternships)
+activate System
+System-->>Company: 2 : show(Internship[ ])
+Company->System: 3 : GET(Internship)
+System-->>Company: 4 : show(Internship)
+Company->System: 5 : GET(Internship.Student)
+System-->>Company: 6 : show(Student)
+alt Student.Contact is VALID
+  Company->System: 7 : GET(NewQuestionnaire)
+  alt MS Forms is not available
+    System-->>Company: 8 : response(503 Service unavailable)
+  else default
+    System->MS Forms: 8 : APICall()
+    activate MS Forms
+    MS Forms-->>System: 9 : editor(Form)
+    deactivateafter MS Forms
+    System-->Company: 10 : editor(Form)
+    Company->System: 11 : submit(Form)
+    System->MS Forms: 12 : APICall(Form)
+    activate MS Forms
+    MS Forms-->>System: 13 : response(200 OK)
+    deactivateafter MS Forms
+    System-->>Student: 14 : notifyObserver(Internship, Form)
+    System-->>Company: 15 : response(200 OK)
+  end
+else default
+  Company->System: 7 : GET(NewQuestionnaire)
+  System-->>Company: 8 : response(403 Forbidden)
+end
+deactivateafter Company
+deactivateafter System

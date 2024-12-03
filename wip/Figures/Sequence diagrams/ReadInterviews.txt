@@ -1,0 +1,9 @@
+actor Company / Student
+participant System
+
+activate Company / Student
+Company / Student->System: 1 : GET(MyInterviews)
+activate System
+System-->>Company / Student: 2 : show(Interview[ ])
+deactivateafter Company / Student
+deactivateafter System
