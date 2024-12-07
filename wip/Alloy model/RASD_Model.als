@@ -25,9 +25,14 @@ sig Application {
 	var applicationStatus: one ApplicationStatus
 }
 
-// If an application is ongoing, the open positions for that internship must decrease
+// No student can be hired without an application
 fact {
-	always(all a:Application | a.applicationStatus = Ongoing implies a.internship.openPositions' = a.internship.openPositions - 1)
+	always(no s:Student | all a:Application | s not in a.student and s.studentStatus = Hired)
+}
+
+// No searching student with an ongoing application
+fact {
+	always(all a:Application | a.applicationStatus = Ongoing iff a.student.studentStatus = Hired)
 }
 
 // Some applications become ongoing.
@@ -59,7 +64,7 @@ fact {
 
 // The number of open positions must decrease if a student is hired
 fact {
-	always(all a:Application | (a.applicationStatus = AcceptedForContact and a.applicationStatus' = Ongoing) implies a.internship.openPositions' = minus[a.internship.openPositions, 1])
+	always(all a:Application | (a.applicationStatus = AcceptedForContact and a.applicationStatus' = Ongoing) implies a.internship.openPositions' = minus[a.internship.openPositions, #(SubsetOfOngoingApplications[a])])
 }
 
 // The number of open positions must not change for internships that do not have interns
@@ -74,7 +79,7 @@ fact {
 
 // No student can be in more than 1 ongoing internship at a time
 fact {
-	always(all disj a1, a2:Application | (a1.applicationStatus = Ongoing and a2.applicationStatus = Ongoing) implies #(a1.student & a2.student) = 0)
+	always(all disj a1, a2:Application | (a1.applicationStatus = Ongoing and a2.applicationStatus = Ongoing) implies a1.student != a2.student)
 }
 
 // Initialization state
@@ -83,8 +88,12 @@ fact init {
 	Internship.openPositions > 0
 }
 
+fun SubsetOfOngoingApplications[a:Application]: Application {
+	{x:a | x.applicationStatus' = Ongoing and x.internship = a.internship}
+}
+
 pred show {
-	#Student <= 4
+	#student = 3
 }
 
 run show
