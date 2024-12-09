@@ -1,6 +1,6 @@
 actor Company
 participant System
-actor Company
+actor Student
 
 activate Company
 Company->System: 1 : GET(Student)
