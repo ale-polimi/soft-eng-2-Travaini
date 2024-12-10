@@ -32,9 +32,18 @@
 .HeaderTable{
 	width: 100%;
 }
+.BodyTable{
+	max-width: 50%;
+}
 .BodyTable td {
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 10px;
+}
+.PDFTableRow{
+	min-height: 256px;
+	height: 512px;
+}
+.FirstColumn{
+	white-space: nowrap;
 }
 .Centered{
 	margin-left: auto;
@@ -46,11 +55,23 @@
 .JustifiedText{
 	text-align: justify;
 }
+.RightAlignedText{
+	text-align: right;
+}
 .Text24{
 	font-size: 24px;
 }
 .Text20{
 	font-size: 20px;
+}
+.Text18{
+	font-size: 18px;
+}
+.Text16{
+	font-size: 16px;
+}
+.Text12{
+	font-size: 12px;
 }
 .RoundedBorders{
 	border-radius: 15px;
@@ -69,15 +90,16 @@
 		</tbody>
 	</table>
 	&emsp;
-	<form class="CenteredText">
-		<input type="text" class="atkinson-hyperlegible-regular Text24 RoundedBorders"> <input type="submit" class="atkinson-hyperlegible-regular Text24 RoundedBorders" value="Search">
-	</form>
-	&emsp;
 	<table class="Centered BodyTable">
 		<tbody>
+			<tr class="PDFTableRow">
+				<td class="atkinson-hyperlegible-regular Text18 CenteredText">PDF Preview here</td>
+			</tr>
 			<tr>
-				<td class="atkinson-hyperlegible-regular Text20 JustifiedText">Lorem ipsum odor amet, consectetuer adipiscing elit. Dictum enim ultricies venenatis eleifend bibendum eros elementum? Porta dictum nascetur felis urna condimentum condimentum. Arcu nascetur vulputate, blandit dignissim conubia penatibus cras metus ridiculus. Vestibulum vivamus sed urna natoque fermentum quam nascetur. Fames nisl suspendisse arcu natoque dui aptent. Ligula aliquam viverra pulvinar hendrerit torquent ante. Suscipit interdum enim netus tellus nisi, mattis vel pharetra.</td>
-				<td class="atkinson-hyperlegible-regular Text20 JustifiedText">Lorem ipsum odor amet, consectetuer adipiscing elit. Dictum enim ultricies venenatis eleifend bibendum eros elementum? Porta dictum nascetur felis urna condimentum condimentum. Arcu nascetur vulputate, blandit dignissim conubia penatibus cras metus ridiculus. Vestibulum vivamus sed urna natoque fermentum quam nascetur. Fames nisl suspendisse arcu natoque dui aptent. Ligula aliquam viverra pulvinar hendrerit torquent ante. Suscipit interdum enim netus tellus nisi, mattis vel pharetra.</td>
+				<td class="atkinson-hyperlegible-regular Text12 CenteredText">Allowed file type: PDF&emsp;Maximum size: 5MB</td>
+			</tr>
+			<tr>
+				<td class="atkinson-hyperlegible-regular Text18 CenteredText">Drag and drop your file on the page or <button class="atkinson-hyperlegible-regular Text18 CenteredText">Browse</button></td>
 			</tr>
 		</tbody>
 	</table>
