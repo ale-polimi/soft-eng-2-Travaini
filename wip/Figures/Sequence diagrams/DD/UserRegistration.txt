@@ -1,0 +1,42 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "AccountManager" as am
+database AccountDB
+
+activate WebApp
+alt User is Student
+  WebApp->api: 1 : signUp(String userType, String name, String surname, String email, String password)
+  activate api
+  api->am: 2 : signUp(String userType, String name, String surname, String email, String password)
+  activate am
+else User is Company OR User is University
+  WebApp->api: 1 : signUp(String userType, String companyName, String companyIdentification, String email, String password)
+  api->am: 2 : signUp(String userType, String companyName, String companyIdentification, String email, String password)
+end
+alt Empty fields
+  am-->>api: 3 : 400_BAD_REQUEST
+  api-->>WebApp: 4 : 400_BAD_REQUEST
+else default
+  am->AccountDB: 3 : executeQuery(email)
+  activate AccountDB
+  AccountDB-->>am: 4  : response
+  deactivateafter AccountDB
+  alt Email already in use
+    am-->>api: 5 : 409_CONFLICT
+    api-->>WebApp: 6 : 409_CONFLICT
+  else default
+    alt User is Student
+      am->AccountDB: 5 : executeQuery(String userType, String name, String surname, String email, String password)
+      activate AccountDB
+    else User is Company OR User is University
+      am->AccountDB: 5 : executeQuery(String userType, String companyName, String companyIdentification, String email, String password)
+    end
+    AccountDB-->>am: 6 : response
+    deactivateafter AccountDB
+    am-->>api: 7 : 201_CREATED
+    deactivateafter am
+    api-->>WebApp: 8 : 201_CREATED
+    deactivateafter api
+    deactivateafter WebApp
+  end
+end

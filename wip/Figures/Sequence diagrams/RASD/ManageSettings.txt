@@ -1,0 +1,30 @@
+actor Registered user
+participant System
+
+activate Registered user
+Registered user->System: 1 : GET(MyAccount)
+activate System
+System-->>Registered user: 2 : show(MyAccount)
+Registered user->System: 3 : GET(Settings)
+System-->>Registered user: 4 : show(Settings)
+deactivateafter System
+space 
+alt UserType = Student
+  activate System
+  Registered user->System: 5 : POST(NEW.Name, NEW.Surname, NEW.Email, NEW.Password)
+else UserType = Company OR UserType = University
+  Registered user->System: 5 : POST(NEW.CompanyName, NEW.CompanyIdentification, NEW.Email, NEW.Password)
+end
+alt NEW.Email is already in use
+  System-->>Registered user: 6 : response(KO, "Email already in use")
+  System-->>Registered user: 7 : show(MyAccount)
+else NEW.Email != OLD.Email OR NEW.Password != OLD.Password
+  System-->>Registered user: 6 : response(200 OK)
+  System-->>Registered user: 7 : invalidateToken()
+  System-->>Registered user: 8 : show(LoginPage)
+else default
+  System-->>Registered user: 6 : response(200 OK)
+  System-->>Registered user: 7 : show(MyAccount)
+end
+deactivateafter Registered user
+deactivateafter System

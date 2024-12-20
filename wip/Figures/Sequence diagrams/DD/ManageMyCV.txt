@@ -1,0 +1,27 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "AccountManager" as am
+database AccountDB
+
+activate WebApp
+WebApp->api: 1 : uploadCV(Long userId, File CV)
+activate api
+api->am: 2 : uploadCV(Long userId, File CV)
+activate am
+alt File is too large
+  am-->>api: 3 : 413_CONTENT_TOO_LARGE
+  api-->>WebApp: 4 : 413_CONTENT_TOO_LARGE
+else File format is not PDF
+  am-->>api: 3 : 415_UNSUPPORTED_MEDIA_TYPE
+  api-->>WebApp: 4 : 415_UNSUPPORTED_MEDIA_TYPE
+else default
+  am->AccountDB: 3 : executeQuery(Long userId, File CV)
+  activate AccountDB
+  AccountDB-->>am: 4 : response
+  deactivateafter AccountDB
+  am-->>api: 5 : 200_OK
+  api-->>WebApp: 6 : 200_OK
+  deactivateafter am
+  deactivateafter api
+  deactivateafter WebApp
+end

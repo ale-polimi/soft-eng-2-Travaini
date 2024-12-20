@@ -1,0 +1,14 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "AccountManager" as am
+database AccountDB
+
+activate WebApp
+WebApp->api: 1 : updatePublicInfo(Long userId, String experiences, List<Skill> skills, String attitudes)
+activate api
+api->am: 2 : updatePublicInfo(Long userId, String experiences, List<Skill> skills, String attitudes)
+activate am
+am->AccountDB: 4 : executeQuery(Long userId, String experiences, List<Skill> skills, String attitudes)
+AccountDB-->>am: 5 : response
+am-->>api: 6 : 200_OK
+api-->>WebApp: 7 : 200_OK

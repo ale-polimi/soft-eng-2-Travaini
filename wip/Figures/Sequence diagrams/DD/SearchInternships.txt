@@ -1,0 +1,16 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "InternshipManager" as im
+database "InternshipDB" as db
+
+activate WebApp
+WebApp->api: 1 : searchInternships(String keyword, List<String> filters)
+activate api
+api->im: 2 : searchInternships(String keyword, List<String> filters)
+activate im
+im->db: 3 : executeQuery(String keyword, List<String> filters)
+activate db
+db-->>im: 4 : response
+deactivateafter db
+im-->>api: 5 : 200_OK
+api-->WebApp: 6 : 200_OK

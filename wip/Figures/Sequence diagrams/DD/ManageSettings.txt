@@ -1,0 +1,49 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "AccountManager" as am
+database AccountDB
+
+activate WebApp
+alt User is Student
+  WebApp->api: 1 : updateSettings(Long userId, String name, String surname, String email, String password)
+  activate api
+  api->am: 2 : updateSettings(Long userId, String name, String surname, String email, String password)
+  activate am
+  
+else User is Company OR User is University
+  WebApp->api: 1 : updateSettings(Long userId, String companyName, String companyIdentification, String email, String password)
+  api->am: 2 : updateSettings(Long userId, String companyName, String companyIdentification, String email, String password)
+end
+alt Empty fields
+  am-->>api: 3 : 400_BAD_REQUEST
+  api-->>WebApp: 4 : 400_BAD_REQUEST
+else default
+  am->AccountDB: 3 : executeQuery(email)
+  activate AccountDB
+  AccountDB-->>am: 4  : response
+  deactivateafter AccountDB
+  alt Email already in use
+    am-->>api: 5 : 409_CONFLICT
+    api-->>WebApp: 6 : 409_CONFLICT
+  else default
+    alt User is Student
+      am->AccountDB: 5 : executeQuery(String userType, String name, String surname, String email, String password)
+      activate AccountDB
+    else User is Company OR User is University
+      am->AccountDB: 5 : executeQuery(String userType, String companyName, String companyIdentification, String email, String password)
+    end
+    AccountDB-->>am: 6 : response
+    deactivateafter AccountDB
+    alt NEW.Email != OLD.Email OR NEW.Password != OLD.Password
+      am->am: 7 : invalidateToken()
+      am-->>api: 8 : 302_FOUND
+      api-->>WebApp: 9 : 302_FOUND
+    else default
+      am-->>api: 7 : 200_OK
+      deactivateafter am
+      api-->>WebApp: 8 : 200_OK
+      deactivateafter api
+      deactivateafter WebApp
+    end
+  end
+end

@@ -1,0 +1,44 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "QuestionnaireManager" as qm
+participant "ApplicationManager" as am
+database "ApplicationDB" as db
+image data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFeElEQVR4nO2db0hdZRzHn2DRmwzEdxK+EHaoHL2Y9CLY2BgRvREiCMznaEPGuo/LrFa4NmzSJbIihpvF7l0OZ9yr0y1xl6DtRi1xpss/JJrlunYh55/pVrrGknK/OGcTru5cvf557nnOud8P/F54PedyuR9/z/d3nnNAxgAAAAAAAAAAAAAAAAAAAAAAIMUoLk5jJYXbmND3MsGrmdDbmdDL7f5YYC2IgvS7MnkZE7yeCX2Qefg8EzotLl6JL1h19uVnMqHnmbKEHmJCH7tfZLyCYHU4vGMTKynKYUIvurvE8jDz8OnEZeoQrHZe8tvrk6lDsNp5KaM4MlidvIRgl+clBLs8LyHY5XkJwfKxXcjGVkbVIdKCfiVqc8A3pwX94ewmX1YSTEKwZpfsgO8CBLuwg7WYToZgFwvWgn6CYAiWhAKDkVuGrMcaTqCD3Sr47Y7v6MvIMG1trsMSnWzBL3zdQhWX29ZVBzvbaMvpWkt5L11opcjMnxSdnaFL41fpmXONyOBkCvZ2d5hf/npqf8e3lnJ3nWuggetTi441fs4Pt2LIcorg6v5uS7m5zXV0aXzU8pyj/T0Q7ATBZ0eG6fGGz+97T+O1lpFhy3NCv1+hJxoXnyNrRsYUHVy74Pax0bhDU01/j+U5P0yM0VNnTiGD7c7gr6IR+rC3a9na2doQd2K2kvvzjWl6NnQaU7QKgr3dHWu6HIqdmGMrMvMX6d+EcB1sJeWBkkJ68NWXlRe8y2JiXqi34kzZKZHB6ftfodwPKijvs09ob6CWqs6HqL6zncJDAzQ4Nkq35ubM36kiONcid7cuMzEbebzSH4cjBT9UupsyD5Sa8l48cZTKmr4w5TX1dFH7b79SZGqS/p3/jxJBFcHe7g7qm5pYtFmx2onZNYI3EhUEe2OOi5V8bJUTMwQrKNhrccyPkxNU1dtpKXfg+rSZyYnmNzrYRsG5zXWmzESvj40p2pimrUQu3aKEYEU6eHtLgLomxxISHG9iXpiyIVjBJVpLUPLxgT5LgbFTdkoLnr9zh27c+ptGpq9R3x9Rujg8RK0/9ZiTuN2CtRUkx5uYjSnbuBe8cFxKCP70+zA9d+wjevrjSsp5r5wefec1Sntjz4ZIZBIFx5O83MS8dMpOCcG7T/mky2SSBC+VvNwes5HHS98bgh0gWLsn2ejc5faYrfalIdghgrWgn55stH5MZ6GsshqCHSRYW6Eg2KEZrEGwu4csDYKdLTgqsVI2gx9+fY95b9i4Js6ueJO2eA+YGxwbeX2cAcHJEXzt5ixN3Zw1d61Wuie888j7EOw0wasBgmUCwYQMdngHawqU1CZN9Q7WFCgIhmBJoIMJHbyGJdp4dLa8pTGhyjpUhiXaDRsdyagMbHRAcBRblejgKPaisURHcbMBGay59ToYQ5bf3RsdEOyHYFwmJQN0MOFuEpZowiM7CmewpkAlZTVO1SVaU6AgGIIlgQ4mdDCWaErJJfr540fIEzxJ74bOUs3FMJ3pvUxtV36hofGrlF9bo0wGe/Hge/JFQHCyUEAKOlgmCkiBYJkoIAWCZaKAFAiWiQJSIFgmCkiBYJkoIAWCZaKAFAiWSQoI1hQoqQ4h2A/Bdneeqzs44P8HHexqwT78i3c3Ct4c8M1pAf/57CZflo0dXJDOSgq3McHLmOD1TOiDzMPn7V5q11680r4v0ykUF6cxUZDLhF7EBK9mQm9ngt+2X54OwdI4vGMTKynKuSe9igk9xDx82n6hOjpYKvvyM5nQ88yl0ZAu9AgEux1bc50jg92d6xyC3Z3rHILdnescgt2d6xyCXUMpf4R5+HYmeCnz8JNM8F7m4Qft/lgAAAAAAAAAAAAAAAAAAAAAAMA2hv8BDIQg8si+QagAAAAASUVORK5CYII= "Microsoft Forms API" as msapi
+
+activate WebApp
+WebApp->api: 1 : submitQuestionnaire(applicationId)
+activate api
+api->qm: 2 : submitQuestionnaire(applicationId)
+activate qm
+qm->am: 3 : getQuestionnaire(applicationId)
+activate am
+am->db: 4 : executeQuery(applicationId)
+activate db
+db-->>am: 5 : response
+deactivateafter db
+am-->>qm: 6 : 200_OK
+deactivateafter am
+alt MS Forms is not available
+  qm-->>api: 7 : 503_SERVICE_UNAVAILABLE
+  api-->>WebApp: 8 : 503_SERVICE_UNAVAILABLE
+else default
+  qm->msapi: 7 : HTTP GET https://forms.office.com/formapi/api/forms/{formId}
+  activate msapi
+  msapi-->>qm: 8 : response
+  deactivateafter msapi
+  qm->msapi: 9 : HTTP POST https://forms.office.com/formapi/api/forms/{formId}
+  activate msapi
+  alt Empty fields
+    msapi-->>qm: 10 : 400_BAD_REQUEST
+    qm-->>api: 11 : 400_BAD_REQUEST
+    api-->>WebApp: 12 : 400_BAD_REQUEST
+  else default
+    msapi-->>qm: 10 : 200_OK
+    deactivateafter msapi
+    qm-->>api: 9 : 200_OK
+    deactivateafter qm
+    api-->>WebApp: 10 : 200_OK
+    deactivateafter api
+    deactivateafter WebApp
+  end
+end

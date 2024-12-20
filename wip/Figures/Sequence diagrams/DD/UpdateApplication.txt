@@ -1,0 +1,19 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "ApplicationManager" as am
+database "ApplicationDB" as db
+
+activate WebApp
+WebApp->api: 1 : updateApplicationStatus(Long userId, Long intershipId, String applicationStatus)
+activate api
+api->am: 2 : updateApplicationStatus(Long userId, Long intershipId, String applicationStatus)
+activate am
+am->db: 3 : executeQuery(Long userId, Long intershipId, String applicationStatus)
+activate db
+db-->>am: 4 : response
+deactivateafter db
+am-->>api: 5 : 200_OK
+deactivateafter am
+api-->>WebApp: 6 : 200_OK
+deactivateafter api
+deactivateafter WebApp

@@ -1,0 +1,19 @@
+actor Company
+participant System
+
+activate Company
+Company->System: 1 : GET(SearchResults?keyword=Keyword)
+activate System
+loop Internships
+  System->System: 2 : match(Keyword, Experiences, Skills, Interests)
+end
+System-->>Company: 3 : show(SearchResults)
+opt Apply filters
+  Company->System: 4 : GET(SearchResults?keyword=Keyword&parameter1=Value1&parameter1=Value2)
+  loop Internships
+    System->System: 2 : match(Keyword, Parameters[], Experiences, Skills, Interests)
+  end
+  System-->>Company: 3 : show(SearchResults)
+end
+deactivateafter Company
+deactivateafter System

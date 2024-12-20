@@ -1,0 +1,24 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "AccountManager" as am
+database AccountDB
+
+activate WebApp
+WebApp->api: 1 : login(String email, String password)
+activate api
+api->am: 2 : login(String email, String password)
+activate am
+am->AccountDB: 3 : executeQuery(email, password)
+activate AccountDB
+AccountDB-->>am: 4 : response
+deactivateafter AccountDB
+alt Incorrect credentials
+  am-->>api: 5 : 401_UNAUTHORIZED
+  api-->>WebApp: 6 : 401_UNATHORIZED
+else default
+  am-->>api: 5 : 200_OK
+  api-->>WebApp: 6 : 200_OK
+  deactivateafter am
+  deactivateafter api
+  deactivateafter WebApp
+end

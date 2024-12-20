@@ -1,0 +1,24 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "InternshipManager" as im
+database "InternshipDB" as db
+
+activate WebApp
+WebApp->api: 1 : createInternship(Long userId, String scope, int openPositions, bool isPaid, String otherBenefits)
+activate api
+api->im: 2 : createInternship(Long userId, String scope, int openPositions, bool isPaid, String otherBenefits)
+activate im
+alt Empty fields
+  im-->>api: 3 : 400_BAD_REQUEST
+  api-->>WebApp: 4 : 400_BAD_REQUEST
+else default
+  im->db: 3 : executeQuery(Long userId, String scope, int openPositions, bool isPaid, String otherBenefits)
+  activate db
+  db-->>im: 4 : response
+  deactivateafter db
+  im-->>api: 5 : 201_CREATED
+  api-->>WebApp: 6 : 201_CREATED
+  deactivateafter im
+  deactivateafter api
+  deactivateafter WebApp
+end
