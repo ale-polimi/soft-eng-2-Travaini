@@ -1,0 +1,34 @@
+materialdesignicons F0322 WebApp
+participant "API Gateway" as api
+participant "CommentManager" as cm
+participant "AccountManager" as am
+database "AccountDB" as adb
+database "CommentDB" as db
+
+activate WebApp
+WebApp->api: 1 : readComments(Long userId, Long applicationId)
+activate api
+api->cm: 2 : readComments(Long userId, Long applicationId)
+activate cm
+cm->am: 3 : getUser(userId)
+activate am
+am->adb: 4 : executeQuery(userId)
+activate adb
+adb-->>am: 5 : response
+deactivateafter adb
+am-->>cm: 6 : 200_OK
+deactivateafter am
+alt user has no permissions to read the comments
+  cm-->>api: 7 : 403_FORBIDDEN
+  api-->>WebApp: 8 : 403_FORBIDDEN
+else default
+  cm->db: 9 : executeQuery(applicationId)
+  activate db
+  db-->>cm: 10 : response
+  deactivateafter db
+  cm-->>api: 11 : 200_OK
+  deactivateafter cm
+  api-->>WebApp: 12 : 200_OK
+  deactivateafter api
+  deactivateafter WebApp
+end

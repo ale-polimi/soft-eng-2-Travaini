@@ -1,66 +1,69 @@
 materialdesignicons F0322 WebApp
 participant "API Gateway" as api
 participant "QuestionnaireManager" as qm
+participant "AccountManager" as acm
+database "AccountDB" as acdb
 participant "ApplicationManager" as am
 database "ApplicationDB" as db
 image data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAB4CAYAAAA5ZDbSAAAACXBIWXMAAAsTAAALEwEAmpwYAAAFeElEQVR4nO2db0hdZRzHn2DRmwzEdxK+EHaoHL2Y9CLY2BgRvREiCMznaEPGuo/LrFa4NmzSJbIihpvF7l0OZ9yr0y1xl6DtRi1xpss/JJrlunYh55/pVrrGknK/OGcTru5cvf557nnOud8P/F54PedyuR9/z/d3nnNAxgAAAAAAAAAAAAAAAAAAAAAAIMUoLk5jJYXbmND3MsGrmdDbmdDL7f5YYC2IgvS7MnkZE7yeCX2Qefg8EzotLl6JL1h19uVnMqHnmbKEHmJCH7tfZLyCYHU4vGMTKynKYUIvurvE8jDz8OnEZeoQrHZe8tvrk6lDsNp5KaM4MlidvIRgl+clBLs8LyHY5XkJwfKxXcjGVkbVIdKCfiVqc8A3pwX94ewmX1YSTEKwZpfsgO8CBLuwg7WYToZgFwvWgn6CYAiWhAKDkVuGrMcaTqCD3Sr47Y7v6MvIMG1trsMSnWzBL3zdQhWX29ZVBzvbaMvpWkt5L11opcjMnxSdnaFL41fpmXONyOBkCvZ2d5hf/npqf8e3lnJ3nWuggetTi441fs4Pt2LIcorg6v5uS7m5zXV0aXzU8pyj/T0Q7ATBZ0eG6fGGz+97T+O1lpFhy3NCv1+hJxoXnyNrRsYUHVy74Pax0bhDU01/j+U5P0yM0VNnTiGD7c7gr6IR+rC3a9na2doQd2K2kvvzjWl6NnQaU7QKgr3dHWu6HIqdmGMrMvMX6d+EcB1sJeWBkkJ68NWXlRe8y2JiXqi34kzZKZHB6ftfodwPKijvs09ob6CWqs6HqL6zncJDAzQ4Nkq35ubM36kiONcid7cuMzEbebzSH4cjBT9UupsyD5Sa8l48cZTKmr4w5TX1dFH7b79SZGqS/p3/jxJBFcHe7g7qm5pYtFmx2onZNYI3EhUEe2OOi5V8bJUTMwQrKNhrccyPkxNU1dtpKXfg+rSZyYnmNzrYRsG5zXWmzESvj40p2pimrUQu3aKEYEU6eHtLgLomxxISHG9iXpiyIVjBJVpLUPLxgT5LgbFTdkoLnr9zh27c+ptGpq9R3x9Rujg8RK0/9ZiTuN2CtRUkx5uYjSnbuBe8cFxKCP70+zA9d+wjevrjSsp5r5wefec1Sntjz4ZIZBIFx5O83MS8dMpOCcG7T/mky2SSBC+VvNwes5HHS98bgh0gWLsn2ejc5faYrfalIdghgrWgn55stH5MZ6GsshqCHSRYW6Eg2KEZrEGwu4csDYKdLTgqsVI2gx9+fY95b9i4Js6ueJO2eA+YGxwbeX2cAcHJEXzt5ixN3Zw1d61Wuie888j7EOw0wasBgmUCwYQMdngHawqU1CZN9Q7WFCgIhmBJoIMJHbyGJdp4dLa8pTGhyjpUhiXaDRsdyagMbHRAcBRblejgKPaisURHcbMBGay59ToYQ5bf3RsdEOyHYFwmJQN0MOFuEpZowiM7CmewpkAlZTVO1SVaU6AgGIIlgQ4mdDCWaErJJfr540fIEzxJ74bOUs3FMJ3pvUxtV36hofGrlF9bo0wGe/Hge/JFQHCyUEAKOlgmCkiBYJkoIAWCZaKAFAiWiQJSIFgmCkiBYJkoIAWCZaKAFAiWSQoI1hQoqQ4h2A/Bdneeqzs44P8HHexqwT78i3c3Ct4c8M1pAf/57CZflo0dXJDOSgq3McHLmOD1TOiDzMPn7V5q11680r4v0ykUF6cxUZDLhF7EBK9mQm9ngt+2X54OwdI4vGMTKynKuSe9igk9xDx82n6hOjpYKvvyM5nQ88yl0ZAu9AgEux1bc50jg92d6xyC3Z3rHILdnescgt2d6xyCXUMpf4R5+HYmeCnz8JNM8F7m4Qft/lgAAAAAAAAAAAAAAAAAAAAAAMA2hv8BDIQg8si+QagAAAAASUVORK5CYII= "Microsoft Forms API" as msapi
-participant "AccountManager" as acm
-database "AccountDB" as acdb
 participant "MailManager" as mm
 image data:image/png;base64,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 "Microsoft Graph API" as msgapi
 
 activate WebApp
-WebApp->api: 1 : submitQuestionnaire(applicationId)
+WebApp->api: 1 : newQuestionnaire(Long userId, Long applicationId)
 activate api
-api->qm: 2 : submitQuestionnaire(applicationId)
+api->qm: 2 : newQuestionnaire(Long userId, Long applicationId)
 activate qm
-qm->am: 3 : getQuestionnaire(applicationId)
-activate am
-am->db: 4 : executeQuery(applicationId)
-activate db
-db-->>am: 5 : response
-deactivateafter db
-am-->>qm: 6 : 200_OK
-deactivateafter am
-alt MS Forms is not available
-  qm-->>api: 7 : 503_SERVICE_UNAVAILABLE
-  api-->>WebApp: 8 : 503_SERVICE_UNAVAILABLE
+qm->acm: 3 : getUser(userId)
+activate acm
+acm->acdb: 4 : executeQuery(userId)
+activate acdb
+acdb-->>acm: 5 : response
+deactivateafter acdb
+acm-->>qm: 6 : 200_OK
+deactivateafter acm
+alt User has no permission to create a questionnaire
+  qm-->>api: 7 : 403_FORBIDDEN
+  api-->>WebApp: 8 : 403_FORBIDDEN
 else default
-  qm->msapi: 7 : HTTP GET https://forms.office.com/formapi/api/forms/{formId}
-  activate msapi
-  msapi-->>qm: 8 : response
-  deactivateafter msapi
-  qm->msapi: 9 : HTTP POST https://forms.office.com/formapi/api/forms/{formId}
-  activate msapi
-  alt Empty fields
-    msapi-->>qm: 10 : 400_BAD_REQUEST
-    qm-->>api: 11 : 400_BAD_REQUEST
-    api-->>WebApp: 12 : 400_BAD_REQUEST
+  alt MS Forms is not available
+    qm-->>api: 7 : 503_SERVICE_UNAVAILABLE
+    api-->>WebApp: 8 : 503_SERVICE_UNAVAILABLE
   else default
-    msapi-->>qm: 10 : 200_OK
+    qm->msapi: 7 : HTTP GET https://forms.office.com/
+    activate msapi
+    msapi-->>qm: 8 : 200_OK
     deactivateafter msapi
+    qm->am: 9 : saveNewQuestionnaire(Long applicationId, Long questionnaireId)
+    activate am
+    am->db: 10 : executeQuery(applicationId, questionnaireId)
+    activate db
+    db-->>am: 11 : response
+    deactivateafter db
+    am-->>qm: 12 : 201_CREATED
+    deactivateafter am
     par Actions done in parallel
-      qm->acm: 11 : getUser(userId)
+      qm->acm: 13 : getUser(userId)
       activate acm
-      acm->acdb: 12 : executeQuery(userId)
+      acm->acdb: 14 : executeQuery(userId)
       activate acdb
-      acdb-->>acm: 13 : response
+      acdb-->>acm: 15 : response
       deactivateafter acdb
-      acm-->>qm: 14 : 200_OK
+      acm-->>qm: 16 : 200_OK
       deactivateafter acm
-      qm->qm: 15 : notifyObserver(application.internship.userId, formId)
-      qm->mm: 16 : createMail(application.internship.userId, formId)
+      qm->qm: 17 : notifyObserver(application.internship.userId, formId)
+      qm->mm: 18 : createMail(application.internship.userId, formId)
       activate mm
-      mm->msgapi: 11 : HTTP POST https://graph.microsoft.com/v1.0/me/sendMail\n       Content-type: application/json
+      mm->msgapi: 19 : HTTP POST https://graph.microsoft.com/v1.0/me/sendMail\n       Content-type: application/json
       activate msgapi
-      msgapi-->>mm: 12 : response
+      msgapi-->>mm: 20 : response
       deactivateafter msgapi
-      mm-->>qm: 13 : 202_ACCEPTED
+      mm-->>qm: 21 : 202_ACCEPTED
       deactivateafter mm
     thread
-      qm-->>api: 9 : 200_OK
+      qm-->>api: 13 : 200_OK
       deactivateafter qm
-      api-->>WebApp: 10 : 200_OK
+      api-->>WebApp: 14 : 200_OK
       deactivateafter api
       deactivateafter WebApp
     end

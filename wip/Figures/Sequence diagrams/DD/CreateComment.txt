@@ -1,43 +1,51 @@
 materialdesignicons F0322 WebApp
 participant "API Gateway" as api
+participant "CommentManager" as cm
+database "CommentDB" as db
 participant "ApplicationManager" as am
-database "ApplicationDB" as db
-participant "AccountManager" as acm
-database "AccountDB" as acdb
-participant "MailManager" as mm
+database "ApplicationDB" as adb
+participant "MailManger" as mm
 image data:image/png;base64,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 "Microsoft Graph API" as msapi
 
 activate WebApp
-WebApp->api: 1 : createNewApplication(Long userId, Long intershipId, String applicationStatus)
+WebApp->api: 1 : createComment(Long userId, Long applicationId, String commentNature, String commentBody)
 activate api
-api->am: 2 : createNewApplication(Long userId, Long intershipId, String applicationStatus)
+api->cm: 2 : createComment(Long userId, Long applicationId, String commentNature, String commentBody)
+activate cm
+cm->am: 3 : getApplication(applicationId)
 activate am
-am->db: 3 : executeQuery(Long userId, Long intershipId, String applicationStatus)
-activate db
-db-->>am: 4 : response
-deactivateafter db
-par Actions done in parallel
-  am->acm: 5 : getUser(internship.userId)
-  activate acm
-  acm->acdb: 6 : executeQuery(internship.userId)
-  activate acdb
-  acdb-->>acm: 7 : response
-  deactivateafter acdb
-  acm-->>am: 8 : 200_OK
-  deactivateafter acm
-  am->am: 9 : notifyObserver(response.user.mail, this.application)
-  am->mm: 10 : createMail(response.user.mail, this.application)
-  activate mm
-  mm->msapi: 11 : HTTP POST https://graph.microsoft.com/v1.0/me/sendMail\n       Content-type: application/json
-  activate msapi
-  msapi-->>mm: 12 : response
-  deactivateafter msapi
-  mm-->>am: 13 : 202_ACCEPTED
-  deactivateafter mm
-thread
-  am-->>api: 5 : 201_CREATED
-  deactivateafter am
-  api-->>WebApp: 6 : 201_CREATED
-  deactivateafter api
-  deactivateafter WebApp
+am->adb: 4 : executeQuery(applicationId)
+activate adb
+adb-->>am: 5 : response
+deactivateafter adb
+am-->>cm: 6 : 200_OK
+deactivateafter am
+alt application.status != Ongoing
+  cm-->>api: 7 : 403_FORBIDDEN
+  api-->>WebApp: 8 : 403_FORBIDDEN
+else Empty fields
+  cm-->>api: 7 : 400_BAD_REQUEST
+  api-->>WebApp: 8 : 400_BAD_REQUEST
+else default
+  cm->db: 7 : executeQuery(Long userId, Long applicationId, String commentNature, String commentBody)
+  activate db
+  db-->>cm: 8 : response
+  deactivateafter db
+  par Actions done in parallel
+    cm->cm: 9 : notifyObserver(internship.user.mail, this.comment)
+    cm->mm: 10 : createMail(internship.user.mail, this.comment)
+    activate mm
+    mm->msapi: 11 : HTTP POST https://graph.microsoft.com/v1.0/me/sendMail\n       Content-type: application/json
+    activate msapi
+    msapi-->>mm: 12 : response
+    deactivateafter msapi
+    mm-->>cm: 13 : 202_ACCEPTED
+    deactivateafter mm
+  thread
+    cm-->>api: 5 : 201_CREATED
+    deactivateafter cm
+    api-->>WebApp: 6 : 201_CREATED
+    deactivateafter api
+    deactivateafter WebApp
+  end
 end
